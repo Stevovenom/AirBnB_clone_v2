@@ -2,6 +2,10 @@
 """ Console Module """
 import cmd
 import sys
+import re # added a module
+import os # added a module
+import uuid # added a module
+from datetime import datetime # added module
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -318,7 +322,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg (changes made)
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -326,10 +330,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ': # changes made
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"': # changes made
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
