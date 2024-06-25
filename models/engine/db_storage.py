@@ -3,7 +3,7 @@
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-import urllib.parse
+#import urllib.parse
 
 from models.base_model import BaseModel, Base
 from models.state import State
@@ -26,9 +26,7 @@ class DBStorage:
         host = os.getenv('HBNB_MYSQL_HOST')
         db_name = os.getenv('HBNB_MYSQL_DB')
         env = os.getenv('HBNB_ENV')
-        DATABASE_URL = "mysql+mysqldb://{}:{}@{}:3306/{}".format(
-            user, pword, host, db_name
-        )
+        DATABASE_URL = f"mysql+mysqldb://{user}:{pword}@{host}/{db_name}"
         self.__engine = create_engine(
             DATABASE_URL,
             pool_pre_ping=True
@@ -78,12 +76,13 @@ class DBStorage:
 
     def reload(self):
         """Loads storage database"""
-        Base.metadata.create_all(self.__engine)
-        SessionFactory = sessionmaker(
+        Base.metadata.create_all(self.__engine) # changes made below
+        session_factory = sessionmaker(
             bind=self.__engine,
             expire_on_commit=False
         )
-        self.__session = scoped_session(SessionFactory)()
+        Session = scoped_session(session_factory) #changes made
+        self.__session = Session() # added this
 
     def close(self):
         """Closes the storage engine."""
