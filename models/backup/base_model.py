@@ -3,6 +3,7 @@
 import uuid
 from datetime import datetime
 
+
 class BaseModel:
     """A base class for all hbnb models"""
     def __init__(self, *args, **kwargs):
@@ -14,20 +15,11 @@ class BaseModel:
             self.updated_at = datetime.now()
             storage.new(self)
         else:
-            format1 = '%Y-%m-%dT%H:%M:%S.%f' # made changes to the whole else statement
-            format2 = '%Y-%m-%d %H:%M:%S.%f'
-            if 'updated_at' in kwargs:
-                try:
-                    kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'], format1)
-                except ValueError:
-                     kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'], format2)
-            if 'created_at' in kwargs:
-                try:
-                    kwargs['created_at'] = datetime.strptime(kwargs['created_at'], format1)
-                except ValueError:
-                    kwargs['created_at'] = datetime.strptime(kwargs['created_at'], format2)
-            if '__class__' in kwargs:
-                del kwargs['__class__']
+            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
+                                                     '%Y-%m-%dT%H:%M:%S.%f')
+            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
+                                                     '%Y-%m-%dT%H:%M:%S.%f')
+            del kwargs['__class__']
             self.__dict__.update(kwargs)
 
     def __str__(self):
