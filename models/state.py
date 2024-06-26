@@ -11,22 +11,17 @@ from models.city import City
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
-    name = Column(
-        String(128), nullable=False
-    ) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else ''
+    name = Column(String(128), nullable=False) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else ''
+
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-        cities = relationship(
-            'City',
-            cascade='all, delete, delete-orphan',
-            backref='state'
-        )
+        cities = relationship('City', cascade='all, delete, delete-orphan', backref='state')
     else:
         @property
         def cities(self):
-            """Returns the cities in this State"""
+            """Returns the list of City instances with state_id equals the current State.id"""
             from models import storage
             cities_in_state = []
-            for value in storage.all(City).values():
-                if value.state_id == self.id:
-                    cities_in_state.append(value)
+            for city in storage.all(City).values():
+                if city.state_id == self.id:
+                    cities_in_state.append(city)
             return cities_in_state
