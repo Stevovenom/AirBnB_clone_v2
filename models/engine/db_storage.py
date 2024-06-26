@@ -3,12 +3,13 @@
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
+#import urllib.parse
 
 from models.base_model import BaseModel, Base
 from models.state import State
 from models.city import City
 from models.user import User
-from models.place import Place
+from models.place import Place, place_amenity
 from models.amenity import Amenity
 from models.review import Review
 
@@ -35,7 +36,7 @@ class DBStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        objects = {}
+        objects = dict()
         all_classes = (User, State, City, Amenity, Place, Review)
         if cls is None:
             for class_type in all_classes:
@@ -61,7 +62,13 @@ class DBStorage:
     def new(self, obj):
         """Adds new object to storage database"""
         if obj is not None:
-            self.__session.add(obj)
+            try:
+                self.__session.add(obj)
+                self.__session.flush()
+                self.__session.refresh(obj)
+            except Exception as ex:
+                self.__session.rollback()
+                raise ex
 
     def save(self):
         """Commits the session changes to database"""
@@ -69,14 +76,14 @@ class DBStorage:
 
     def reload(self):
         """Loads storage database"""
-        Base.metadata.create_all(self.__engine)
+        Base.metadata.create_all(self.__engine) # changes made below
         session_factory = sessionmaker(
             bind=self.__engine,
             expire_on_commit=False
         )
-        Session = scoped_session(session_factory)
-        self.__session = Session()
+        Session = scoped_session(session_factory) #changes made
+        self.__session = Session() # added this
 
     def close(self):
         """Closes the storage engine."""
-        self.__session.remove()
+        self.__session.close()
