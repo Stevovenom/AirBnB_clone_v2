@@ -2,10 +2,10 @@
 """ Console Module """
 import cmd
 import sys
-import re # added a module
-import os # added a module
-import uuid # added a module
-from datetime import datetime # added module
+import re
+import os
+import uuid
+from datetime import datetime
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -77,7 +77,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] == '{' and pline[-1] =='}'\
+                    if pline[0] == '{' and pline[-1] =='}' \
                             and type(eval(pline)) == dict:
                         _args = pline
                     else:
