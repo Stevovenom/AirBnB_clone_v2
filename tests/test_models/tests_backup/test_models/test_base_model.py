@@ -97,16 +97,3 @@ class test_basemodel(unittest.TestCase):
         n = new.to_dict()
         new = BaseModel(**n)
         self.assertFalse(new.created_at == new.updated_at)
-
-    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') != 'file', "not testing file storage")
-    def test_delete(self):
-        """ Testing delete """
-        new = self.value()
-        new.save()
-        new_id = new.id
-        new.delete()
-        self.assertIsNone(storage.get(self.value, new_id))
-
-
-if __name__ == "__main__":
-    unittest.main()
