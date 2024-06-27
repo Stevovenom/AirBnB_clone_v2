@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
-import os
+import os  # Add this line to import the os module
 
 from sqlalchemy import Column, String, ForeignKey, Integer, Float
 from sqlalchemy.orm import relationship
@@ -22,14 +22,4 @@ class Place(BaseModel, Base):
     latitude = Column(Float) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else 0.0
     longitude = Column(Float) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else 0.0
     amenity_ids = [] if os.getenv('HBNB_TYPE_STORAGE') != 'db' else None
-    
     user = relationship('User', back_populates='places') if os.getenv('HBNB_TYPE_STORAGE') == 'db' else None
-    reviews = relationship('Review', back_populates='place', cascade='all, delete-orphan') if os.getenv('HBNB_TYPE_STORAGE') == 'db' else None
-
-    if os.getenv('HBNB_TYPE_STORAGE') != 'db':
-        @property
-        def reviews(self):
-            """Returns the list of Review instances with place_id equals to the current Place.id"""
-            from models import storage
-            from models.review import Review
-            return [review for review in storage.all(Review).values() if review.place_id == self.id]
