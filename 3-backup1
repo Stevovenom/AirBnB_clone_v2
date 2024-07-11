@@ -34,7 +34,7 @@ def do_deploy(archive_path):
     if exists(archive_path) is False:
         return False  # Returns False if the file at archive_path doesnt exist
     filename = archive_path.split('/')[-1]
-    # so now filename is <web_static_2024041409349.tgz>
+    # so now filename is <web_static_2021041409349.tgz>
     no_tgz = '/data/web_static/releases/' + "{}".format(filename.split('.')[0])
     # curr = '/data/web_static/current'
     tmp = "/tmp/" + filename
