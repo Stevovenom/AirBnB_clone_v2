@@ -12,7 +12,7 @@ $nginx_conf = "server {
         index index.html index.htm;
     }
     location /redirect_me {
-        return 301 http://github.com/besthor/;
+        return 301 http://github.com/stevovenom/;
     }
     error_page 404 /404.html;
     location /404 {
@@ -56,7 +56,7 @@ file { '/data/web_static/current':
   target => '/data/web_static/releases/test'
 } ->
 
-exec { 'chown -R root:root /data/':
+exec { 'chown -R ubuntu:ubuntu /data/':
   path => '/usr/bin/:/usr/local/bin/:/bin/'
 }
 
