@@ -1,15 +1,14 @@
-<!-- web_flask/templates/7-states_list.html -->
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>HBNB</title>
-</head>
-<body>
-    <H1>States</H1>
-    <UL>
+<HTML lang="en">
+    <HEAD>
+        <TITLE>HBNB</TITLE>
+    </HEAD>
+    <BODY>
+        <H1>States</H1>
+        <UL>
         {% for state in states %}
-            <LI>{{ state.name }}</LI>
+            <LI>{{ state.id }}: <B>{{ state.name }}</B></LI>
         {% endfor %}
-    </UL>
-</body>
-</html>
+        </UL>
+    </BODY>
+</HTML>
