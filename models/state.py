@@ -11,14 +11,18 @@ from models.city import City
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
-    name = Column(String(128), nullable=False) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else ''
+    name = Column(String(128), nullable=False) if os.getenv(
+        'HBNB_TYPE_STORAGE') == 'db' else ''
 
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-        cities = relationship('City', cascade='all, delete, delete-orphan', backref='state')
+        cities = relationship(
+            'City', cascade='all, delete, delete-orphan', backref='state')
     else:
         @property
         def cities(self):
-            """Returns the list of City instances with state_id equals the current State.id"""
+            """
+            Returns list of City instance with state_id equal current State.id
+            """
             from models import storage
             cities_in_state = []
             for city in storage.all(City).values():
