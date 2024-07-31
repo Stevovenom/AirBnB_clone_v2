@@ -15,7 +15,8 @@ from sqlalchemy.orm import sessionmaker
 
 
 class DBStorage:
-    """This class creates the engine for a mysql database storage system"""
+    """This class creates the engine for a mysql database
+    storage system"""
 
     all_classes = {"BaseModel": BaseModel, "User": User, "State": State,
                    "City": City, "Amenity": Amenity, "Place": Place,
@@ -24,7 +25,7 @@ class DBStorage:
     __session = None
 
     def __init__(self):
-        """Instantiate the engine and drop if test database"""
+        """Instatiate the engine and drop if test database"""
         self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".format(
             os.environ['HBNB_MYSQL_USER'],
             os.environ['HBNB_MYSQL_PWD'],
@@ -34,20 +35,14 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """Query all objects for current session based on class name"""
+        """Query all objects for curent session based on class name"""
         obj_dict = {}
-        if cls:
-            if isinstance(cls, str):
-                cls = self.all_classes.get(cls)
-            elif cls.__name__ in self.all_classes:
-                cls = self.all_classes[cls.__name__]
-            else:
-                return obj_dict
+        cls = self.all_classes[cls]
+        if cls is not None:
             objects = self.__session.query(cls).all()
         else:
-            objects = []
-            for class_name in self.all_classes.values():
-                objects.extend(self.__session.query(class_name).all())
+            objects = self.__session.query(
+                State, City, User, Amenity, Place, Review)
         for obj in objects:
             key = obj.__class__.__name__ + '.' + obj.id
             value = obj
@@ -78,6 +73,5 @@ class DBStorage:
         self.__session = Session()
 
     def close(self):
-        """Call close on private session."""
-        self.__session.remove()
-        self.reload()
+        """ call close on private session. """
+        self.__session.close()
