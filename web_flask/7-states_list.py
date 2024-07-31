@@ -2,7 +2,7 @@
 """
 7. Start Flask service to display a list of states.
 
-This script sets up a Flask web application with a single route, `/states_list`,
+This script sets up a Flask web application with a single route, `/states_list`
 that displays a list of states retrieved from the `storage` module. The states
 are sorted by name before being passed to the template for rendering.
 
@@ -27,6 +27,7 @@ logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 
+
 @app.teardown_appcontext
 def teardown_db(exception):
     """
@@ -40,6 +41,7 @@ def teardown_db(exception):
         exception (Exception): The exception raised during the request, if any.
     """
     storage.close()
+
 
 @app.route('/states_list')
 def states_list():
@@ -57,6 +59,7 @@ def states_list():
     print(states)  # Debug print to verify the data
     sorted_states = sorted(states.values(), key=lambda x: x.name)
     return render_template('7-states_list.html', states=sorted_states)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
