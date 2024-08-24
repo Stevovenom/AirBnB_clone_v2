@@ -7,7 +7,7 @@ from flask import Flask
 app = Flask(__name__)
 
 
-@app.route('/test_route/', strict_slashes=False)
+@app.route('/airbnb-onepage/', strict_slashes=False)
 def hello():
     """
     Returns 'Hello HBNB!' when accessed at the root route
