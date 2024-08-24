@@ -8,7 +8,7 @@ from flask import Flask, render_template, abort
 app = Flask(__name__)
 
 
-@app.route('/', strict_slashes=False)
+@app.route('/number_odd_or_even/<int:n>', strict_slashes=False)
 def hello_hbnb():
     """
     Displays "Hello HBNB!" at the root route.
